@@ -989,7 +989,7 @@
 
 
     <!-- =========================
-         CONTACT
+         CONTACT / QUOTE FORM
     ========================== -->
 
     <section
@@ -1022,12 +1022,7 @@
 
 
 
-        <form
-          id="quote-form"
-          action="mailto:Julian@northmooraudio.com"
-          method="post"
-          enctype="text/plain"
-        >
+        <form id="quote-form">
 
 
           <div class="form-row">
@@ -1059,11 +1054,11 @@
             />
 
             <input
-             type="date"
-             id="event-date"
-             name="Event Date"
-             required
-             onclick="this.showPicker()"
+              type="date"
+              id="event-date"
+              name="Event Date"
+              required
+              onclick="this.showPicker()"
             />
 
           </div>
@@ -1088,9 +1083,16 @@
 
 
 
-          <select name="Service Needed">
+          <select
+            name="Service Needed"
+            required
+          >
 
-            <option value="">
+            <option
+              value=""
+              selected
+              disabled
+            >
               Service Needed
             </option>
 
@@ -1199,17 +1201,26 @@
 
 
     <div class="container copyright">
-      © 2026 Northmoor Audio. All Rights Reserved.
+
+      © 2026 Northmoor Audio.
+      All Rights Reserved.
+
     </div>
 
   </footer>
 
 
 
-  <!--
-      Built by Spade ♠
-      AceOfEntertainment
-  -->
+  <!-- ==================================================
+       SPADE ♠
+       Website Design & Development
+       AceOfEntertainment
+       © 2026
+  =================================================== -->
+
+
+  <!-- QUOTE EMAIL SCRIPT -->
+  <script src="script.js"></script>
 
 
 </body>
