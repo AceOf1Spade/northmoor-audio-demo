@@ -386,7 +386,7 @@ header {
 
 
 /* =========================
-   GRID / CARDS
+   GENERAL GRID / CARDS
 ========================= */
 
 .grid {
@@ -473,7 +473,7 @@ header {
 
   max-width: 720px;
 
-  font-size: 0.82rem;
+  font-size: 0.86rem;
 
   color: var(--muted-dark);
 }
@@ -499,6 +499,8 @@ header {
 
   flex-direction: column;
 
+  min-height: 100%;
+
   transition:
     transform var(--transition),
     border-color var(--transition),
@@ -521,6 +523,11 @@ header {
   background: #0d0d0d;
 
   border-bottom: 1px solid var(--line);
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
 }
 
 .reference-image img {
@@ -529,7 +536,9 @@ header {
 
   object-fit: cover;
 
-  transition: transform 0.35s ease;
+  transition:
+    transform 0.35s ease,
+    opacity 0.35s ease;
 }
 
 .reference-card:hover .reference-image img {
@@ -605,7 +614,7 @@ header {
 }
 
 
-/* EQUIPMENT IMAGES */
+/* EQUIPMENT IMAGE AREA */
 
 .equipment-gallery {
   background:
