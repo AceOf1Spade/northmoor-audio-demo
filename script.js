@@ -2,6 +2,7 @@
    NORTHMOOR AUDIO
    Basic Quote Email
    Built by Spade ♠
+   © 2026
 =================================================== */
 
 const quoteForm = document.getElementById("quote-form");
@@ -48,12 +49,20 @@ ${service}
 
 Event Details:
 ${details}
-  `;
+
+Please send this email to complete your quote request.
+`;
 
   const mailtoLink =
-    `mailto:Julian@northmooraudio.com` +
-    `?subject=${encodeURIComponent(subject)}` +
-    `&body=${encodeURIComponent(body)}`;
+    "mailto:Julian@northmooraudio.com" +
+    "?subject=" +
+    encodeURIComponent(subject) +
+    "&body=" +
+    encodeURIComponent(body);
+
+  alert(
+    "Your email app will open next. Please press Send to submit your quote request."
+  );
 
   window.location.href = mailtoLink;
 });
