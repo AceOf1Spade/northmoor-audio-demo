@@ -1,6 +1,6 @@
 /* ==================================================
    NORTHMOOR AUDIO
-   Basic Quote Email
+   Basic Quote Form -> Gmail Draft
    Built by Spade ♠
    © 2026
 =================================================== */
@@ -23,8 +23,7 @@ quoteForm.addEventListener("submit", function (event) {
 
   const subject = `Northmoor Audio Quote Request - ${name}`;
 
-  const body = `
-NEW NORTHMOOR AUDIO QUOTE REQUEST
+  const body = `NEW NORTHMOOR AUDIO QUOTE REQUEST
 
 Name:
 ${name}
@@ -48,21 +47,15 @@ Service Needed:
 ${service}
 
 Event Details:
-${details}
+${details}`;
 
-Please send this email to complete your quote request.
-`;
+  const gmailLink =
+    "https://mail.google.com/mail/?view=cm&fs=1" +
+    "&to=" + encodeURIComponent("Julian@northmooraudio.com") +
+    "&su=" + encodeURIComponent(subject) +
+    "&body=" + encodeURIComponent(body);
 
-  const mailtoLink =
-    "mailto:Julian@northmooraudio.com" +
-    "?subject=" +
-    encodeURIComponent(subject) +
-    "&body=" +
-    encodeURIComponent(body);
+  alert("A Gmail draft will open next. Please review it and press Send.");
 
-  alert(
-    "Your email app will open next. Please press Send to submit your quote request."
-  );
-
-  window.location.href = mailtoLink;
+  window.open(gmailLink, "_blank");
 });

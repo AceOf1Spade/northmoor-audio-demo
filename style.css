@@ -210,7 +210,6 @@ header {
 
 .nav-links a {
   position: relative;
-
   transition: color var(--transition);
 }
 
@@ -318,7 +317,6 @@ header {
 
 .hero-logo {
   width: min(720px, 100%);
-
   margin-bottom: 36px;
 }
 
@@ -528,7 +526,6 @@ header {
 
 .reference-content {
   padding: 26px;
-
   flex: 1;
 }
 
@@ -794,7 +791,6 @@ header {
 
 .about-image img {
   width: min(430px, 90%);
-
   opacity: 0.95;
 }
 
@@ -909,7 +905,6 @@ select:focus {
 
 textarea {
   min-height: 160px;
-
   resize: vertical;
 }
 
@@ -1150,9 +1145,7 @@ footer {
   }
 
 
-  /* =========================
-     MOBILE REFERENCES
-  ========================= */
+  /* REFERENCES */
 
   .reference-image {
     height: 470px;
@@ -1163,9 +1156,7 @@ footer {
   }
 
 
-  /* =========================
-     MOBILE EQUIPMENT FIX
-  ========================= */
+  /* EQUIPMENT */
 
   .equipment-showcase {
     grid-template-columns: 1fr;
@@ -1239,9 +1230,7 @@ footer {
   }
 
 
-  /* =========================
-     MOBILE ABOUT
-  ========================= */
+  /* ABOUT */
 
   .about-image {
     min-height: 280px;
@@ -1250,9 +1239,7 @@ footer {
   }
 
 
-  /* =========================
-     MOBILE FORM
-  ========================= */
+  /* FORM */
 
   form {
     padding: 20px;
