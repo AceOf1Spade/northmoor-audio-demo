@@ -946,6 +946,27 @@ form .btn {
 
 
 /* =========================
+   DATE PICKER
+========================= */
+
+input[type="date"] {
+  color: var(--text);
+
+  color-scheme: dark;
+
+  cursor: pointer;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+
+  opacity: 1;
+
+  filter: invert(1);
+}
+
+
+/* =========================
    FOOTER
 ========================= */
 
