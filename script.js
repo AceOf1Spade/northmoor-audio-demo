@@ -7,11 +7,11 @@
 "use strict";
 
 const quoteForm = document.getElementById("quote-form");
+const submitButton = document.getElementById("quote-submit");
+const formStatus = document.getElementById("form-status");
 const eventDate = document.getElementById("event-date");
 
-const recipientEmail = "Julian@northmooraudio.com";
-
-/* Set the earliest event date using the visitor's local date. */
+/* Earliest event date, based on the visitor's local time. */
 
 if (eventDate) {
   const today = new Date();
@@ -23,96 +23,84 @@ if (eventDate) {
   eventDate.min = `${year}-${month}-${day}`;
 }
 
-/* Format the event date without timezone shifts. */
+/* Send quote requests through Formspree. */
 
-function formatEventDate(value) {
-  if (!value) {
-    return "Not provided";
-  }
+if (quoteForm && submitButton && formStatus) {
+  let isSubmitting = false;
 
-  const [year, month, day] = value.split("-").map(Number);
-  const date = new Date(year, month - 1, day);
-
-  return date.toLocaleDateString("en-US", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-    year: "numeric"
-  });
-}
-
-/* Build and open the Gmail quote draft. */
-
-if (quoteForm) {
-  quoteForm.addEventListener("submit", function (event) {
+  quoteForm.addEventListener("submit", async function (event) {
     event.preventDefault();
 
-    if (!quoteForm.reportValidity()) {
+    if (isSubmitting || !quoteForm.reportValidity()) {
       return;
     }
 
+    isSubmitting = true;
+    submitButton.disabled = true;
+    submitButton.textContent = "Sending...";
+    quoteForm.setAttribute("aria-busy", "true");
+
+    formStatus.textContent = "Sending your quote request...";
+    formStatus.style.color = "";
+
     const formData = new FormData(quoteForm);
 
-    function getField(fieldName) {
-      const value = formData.get(fieldName);
+    try {
+      const response = await fetch(quoteForm.action, {
+        method: "POST",
+        body: formData,
+        headers: {
+          Accept: "application/json"
+        }
+      });
 
-      return typeof value === "string"
-        ? value.trim()
-        : "";
-    }
+      if (response.ok) {
+        quoteForm.reset();
 
-    const name = getField("Name");
-    const email = getField("Email");
-    const phone = getField("Phone");
-    const date = getField("Event Date");
-    const venue = getField("Venue / Location");
-    const audience = getField("Estimated Audience Size");
-    const service = getField("Service Needed");
-    const details = getField("Event Details");
+        formStatus.textContent =
+          "Your quote request was submitted successfully! " +
+          "Northmoor Audio will follow up about availability and pricing.";
 
-    const subject = `Northmoor Audio Quote Request — ${name}`;
+        formStatus.style.color = "#b7efc5";
+      } else {
+        let message =
+          "Your request could not be submitted. Please try again.";
 
-    const body = [
-      "NORTHMOOR AUDIO QUOTE REQUEST",
-      "",
-      `Name: ${name}`,
-      `Email: ${email}`,
-      `Phone: ${phone || "Not provided"}`,
-      "",
-      `Event Date: ${formatEventDate(date)}`,
-      `Venue / Location: ${venue || "Not provided"}`,
-      `Estimated Audience Size: ${audience || "Not provided"}`,
-      `Service Needed: ${service}`,
-      "",
-      "Event Details:",
-      details || "Not provided",
-      "",
-      "Please reply with availability and a quote.",
-      "",
-      `Thank you,`,
-      name
-    ].join("\n");
+        try {
+          const result = await response.json();
 
-    const gmailUrl = new URL("https://mail.google.com/mail/");
+          if (Array.isArray(result.errors)) {
+            const errors = result.errors
+              .map((error) => error.message)
+              .filter((text) => typeof text === "string");
 
-    gmailUrl.searchParams.set("view", "cm");
-    gmailUrl.searchParams.set("fs", "1");
-    gmailUrl.searchParams.set("to", recipientEmail);
-    gmailUrl.searchParams.set("su", subject);
-    gmailUrl.searchParams.set("body", body);
+            if (errors.length > 0) {
+              message = errors.join(" ");
+            }
+          }
+        } catch {
+          // Keep the default message if the response isn't JSON.
+        }
 
-    /*
-      Open directly during the submit action.
-      Fall back to the current tab if pop-ups are blocked.
-    */
+        formStatus.textContent = message;
+        formStatus.style.color = "#ffb4b4";
+      }
+    } catch {
+      /*
+        A connection failure can leave submission status uncertain.
+        Keep the entered details so the visitor can retry.
+      */
 
-    const draftWindow = window.open("about:blank", "_blank");
+      formStatus.textContent =
+        "We couldn't confirm your submission. Please check your " +
+        "connection and try again, or email Julian@northmooraudio.com.";
 
-    if (draftWindow) {
-      draftWindow.opener = null;
-      draftWindow.location.replace(gmailUrl.toString());
-    } else {
-      window.location.assign(gmailUrl.toString());
+      formStatus.style.color = "#ffb4b4";
+    } finally {
+      isSubmitting = false;
+      submitButton.disabled = false;
+      submitButton.textContent = "Send Quote Request";
+      quoteForm.removeAttribute("aria-busy");
     }
   });
 }
